@@ -1,13 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
 import { Warrant } from "../types";
 
-// Initialize Gemini Client
-// Note: In a real app, ensure API_KEY is handled securely.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Vite projelerinde ortam değişkenlerine 'import.meta.env' ile erişilir.
+// Değişken adının başına 'VITE_' eklemek zorunludur.
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+const ai = new GoogleGenAI(API_KEY || '');
 
 export const analyzeWarrant = async (warrant: Warrant): Promise<string> => {
-  if (!process.env.API_KEY) {
-    return "API Anahtarı eksik. Lütfen .env dosyasını kontrol edin.";
+  if (!API_KEY) {
+    return "API Anahtarı bulunamadı. Lütfen Vercel üzerinden VITE_GEMINI_API_KEY değişkenini tanımlayın.";
   }
 
   try {
